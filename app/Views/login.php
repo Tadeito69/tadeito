@@ -1,16 +1,12 @@
-<h1>Login</h1>
-<div class="card">
-    <div class="card-body">
-        <form method="post" action="<?= base_url("/dashboard1"); ?>">
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input name="email" required type="email" class="form-control" id="email" placeholder="Email">
-            </div>
-            <div class="mb-3">
-                <label for="contrasena" class="form-label">Contraseña</label>
-                <input name="contrasena" required type="password" class="form-control" id="password" placeholder="Contraseña">
-            </div>
-            <div class="mb-3"><input type="submit" value="Login" class="btn btn-primary" /></div>
-        </form>
+<form id="login-form" class="form" action="<?php echo base_url('/login') ?>" method="post">
+    <h3 class="text-center text-info">Login</h3>
+    <div class="form-group">
+        <label for="usuario" class="text-info">Usuario:</label><br>
+        <input type="text" name="usuario" id="usuario" class="form-control">
     </div>
-</div>
+    <div class="form-group">
+        <label for="contrasena" class="text-info">Contraseña:</label><br>
+        <input type="password" name="contrasena" id="contrasena" class="form-control">
+    </div>
+    <button class="btn btn-primary">Entrar</button>
+</form>

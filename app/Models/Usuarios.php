@@ -4,7 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class UserModel extends Model
+class Usuario extends Model
 {
     protected $table = 'usuarios';
     protected $primaryKey = 'id';
@@ -24,19 +24,16 @@ class UserModel extends Model
     protected $validationRules = [];
     protected $validationMessages = [];
     protected $skipValidation = false;
-
-
-
-    public function crear($data)
-    {
-        $Usuario = $this->db->table('usuarios');
-        $Usuario->insert($data);
-        return $this->db->insertID();
-    }
-    public function obtenerUsuario($data)
-    {
-        $Usuario = $this->db->table('usuarios');
-        $Usuario->where($data);
-        return $Usuario->get()->getResultArray();
-    }
 }
+
+
+class Usuarios
+{
+   public function obtenerUsuario()
+    {
+        // Aquí implementa la lógica para obtener un usuario según las condiciones
+        // Debe devolver los datos del usuario en algún formato, como un arreglo
+ }   
+}
+
+

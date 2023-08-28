@@ -19,15 +19,18 @@ class Register extends BaseController
         $userModel = new UserModel();
 
         $nombre = $this->request->getPost('nombre');
+        $usuario = $this->request->getPost('usuario');
         $contrasena = $this->request->getPost('contrasena');
         $email = $this->request->getPost('email');
+
 
         $contrasena = password_hash("$contrasena", PASSWORD_BCRYPT);
 
         $data = [
             'nombre' => $nombre,
             'contrasena' => $contrasena,
-            'email' => $email
+            'email' => $email,
+            'usuario' => $usuario
         ];
 
         $r = $userModel->crear($data);

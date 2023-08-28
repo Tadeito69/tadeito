@@ -29,14 +29,15 @@ $routes->setAutoRoute(true);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Home::index');
+$routes->get('/', 'Inicio::index');
 
 $routes->get('/login', 'Login::index');
-$routes->get('/register', 'Register::index');
-$routes->get('dashboard1/(:num)', 'Dashboard::mostrarVista/$1');
-
 $routes->post('/login', 'Login::do_login');
+
+$routes->get('/register', 'Register::index');
 $routes->post('/register', 'Register::do_register');
+
+$routes->get('/inicio', 'Inicio::index');
 
 /*
  * --------------------------------------------------------------------

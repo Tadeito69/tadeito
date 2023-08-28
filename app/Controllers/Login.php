@@ -2,47 +2,37 @@
 
 namespace App\Controllers;
 
-use App\Models\UserModel;
+use App\Models\Usuarios;
+use CodeIgniter\Controller;
 
-class Login extends BaseController
+class Login extends Controller
 {
     public function index()
     {
-        $mensaje = session('mensaje');
         echo view('common/header');
-        echo view('login', ["mensaje" => $mensaje]);
-        //echo view('common/footer');
+        echo view('login');
+        // echo view('common/footer');
     }
+
     public function do_login()
     {
-
-        $userModel = new UserModel();
-
-        $email = $this->request->getPost('email');
+        $usuario = $this->request->getPost('usuario');
         $contrasena = $this->request->getPost('contrasena');
+        $Usuario = new Usuarios();
 
-        $data = [
-            'email' => $email,
-            'contrasena' => $contrasena
-        ];
+        $datosUsuario = $Usuario->obtenerUsuario(['usuario' => $usuario]);
 
-        $r = $userModel->obtenerUsuario($data);
-
-        if (count($r) > 0) {
+        if (!empty($datosUsuario) && password_verify($contrasena, $datosUsuario[0]['contrasena'])) {
             $data = [
-                'id' => $r[0]['id'],
-                'nombre' => $r[0]['nombre'],
-                'email' => $r[0]['email'],
-                'isLoggedIn' => true
+                "usuario" => $datosUsuario[0]['usuario'],
+                "type" => $datosUsuario[0]['type']
             ];
-
             $session = session();
             $session->set($data);
-            return redirect()->to('/dashboard1');
+
+            return redirect()->to(base_url('/inicio'));
         } else {
-            $session = session();
-            $session->setFlashdata('mensaje', 'Usuario o contraseña incorrectos');
-            return redirect()->to('/login');
+            return redirect()->to(base_url('/login'));
         }
     }
 }
