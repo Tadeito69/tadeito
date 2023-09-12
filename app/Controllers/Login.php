@@ -2,47 +2,30 @@
 
 namespace App\Controllers;
 
-use App\Models\UserModel;
+use App\Models\Usuarios;
 
 class Login extends BaseController
 {
     public function index()
     {
-        $mensaje = session('mensaje');
-        echo view('common/header');
-        echo view('login', ["mensaje" => $mensaje]);
-        //echo view('common/footer');
+        return view('login');
     }
-    public function do_login()
+
+    public function verificar()
     {
-
-        $userModel = new UserModel();
-
-        $email = $this->request->getPost('email');
+        $usuario = $this->request->getPost('usuario');
         $contrasena = $this->request->getPost('contrasena');
 
-        $data = [
-            'email' => $email,
-            'contrasena' => $contrasena
-        ];
+        $usuariosModel = new Usuarios();
+        $usuarioEncontrado = $usuariosModel->obtenerUsuarioPorNombre($usuario);
 
-        $r = $userModel->obtenerUsuario($data);
-
-        if (count($r) > 0) {
-            $data = [
-                'id' => $r[0]['id'],
-                'nombre' => $r[0]['nombre'],
-                'email' => $r[0]['email'],
-                'isLoggedIn' => true
-            ];
-
-            $session = session();
-            $session->set($data);
-            return redirect()->to('/dashboard1');
+        if ($usuarioEncontrado && password_verify($contrasena, $usuarioEncontrado['contrasena'])) {
+            // Iniciar sesión aquí si es necesario
+            // return redirect()->to(base_url('iniciar')); // Credenciales correctas, redirigir al inicio
+            return view('inicio');
         } else {
-            $session = session();
-            $session->setFlashdata('mensaje', 'Usuario o contraseña incorrectos');
-            return redirect()->to('/login');
+            return redirect()->to(base_url('login'))->with('mensaje', 'Credenciales incorrectas');
+            // Credenciales incorrectas, mantener al usuario en la vista de login
         }
     }
 }

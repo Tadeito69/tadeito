@@ -3,43 +3,45 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
+use CodeIgniter\Controller;
 
-class Register extends BaseController
+class Register extends Controller
 {
-    public function index(): string
+    public function index()
     {
-        echo view('common/header');
         return view('register');
-        echo view('common/footer');
     }
-
 
     public function do_register()
     {
         $userModel = new UserModel();
 
         $nombre = $this->request->getPost('nombre');
+        $usuario = $this->request->getPost('usuario');
         $contrasena = $this->request->getPost('contrasena');
         $email = $this->request->getPost('email');
 
-        $contrasena = password_hash("$contrasena", PASSWORD_BCRYPT);
+        $existingUser = $userModel->where('usuario', $usuario)->first();
 
-        $data = [
-            'nombre' => $nombre,
-            'contrasena' => $contrasena,
-            'email' => $email
-        ];
-
-        $r = $userModel->crear($data);
-
-        //$r = $userModel->insert($data);
-
-        if ($r) {
-            echo "Usuario registrado correctamente";
+        if ($existingUser) {
+            return redirect()->to(base_url('/register'))->with('mensaje', 'El nombre de usuario ya está en uso.');
         } else {
-            echo "Error al registrar el usuario";
-        }
+            $contrasena = password_hash($contrasena, PASSWORD_BCRYPT);
 
-        //return redirect()->to('/login');
+            $data = [
+                'nombre' => $nombre,
+                'contrasena' => $contrasena,
+                'email' => $email,
+                'usuario' => $usuario
+            ];
+
+            $result = $userModel->insert($data);
+
+            if ($result) {
+                return redirect()->to(base_url('/login'))->with('mensaje', 'Usuario registrado correctamente');
+            } else {
+                return redirect()->to(base_url('/register'))->with('mensaje', 'Error al registrar el usuario');
+            }
+        }
     }
 }

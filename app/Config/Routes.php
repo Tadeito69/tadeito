@@ -11,7 +11,7 @@ $routes = Services::routes();
  * --------------------------------------------------------------------
  */
 $routes->setDefaultNamespace('App\Controllers');
-$routes->setDefaultController('Home');
+$routes->setDefaultController('Inicio');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
 $routes->set404Override();
@@ -29,14 +29,18 @@ $routes->setAutoRoute(true);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Home::index');
+$routes->get('/', 'Inicio::index'); // Cambia 'Inicio::index' al controlador y método correctos
+$routes->post('inicio', 'Login::verificar'); // Ruta de verificación de inicio de sesión
+$routes->get('inicio', 'Inicio::index'); // Ruta de inicio
+$routes->get('register', 'Register::index'); // Ruta para la página de registro
+$routes->post('register/do_register', 'Register::do_register'); // Ruta para el proceso de registro
+$routes->get('terminos', 'Terminos::index');
+$routes->get('politica', 'Politica::index');
 
-$routes->get('/login', 'Login::index');
-$routes->get('/register', 'Register::index');
-$routes->get('dashboard1/(:num)', 'Dashboard::mostrarVista/$1');
 
-$routes->post('/login', 'Login::do_login');
-$routes->post('/register', 'Register::do_register');
+
+
+
 
 /*
  * --------------------------------------------------------------------
