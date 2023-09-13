@@ -11,4 +11,3 @@ class Inicio extends BaseController
         return view('inicio');
     }
 }
-aaaaaaa
